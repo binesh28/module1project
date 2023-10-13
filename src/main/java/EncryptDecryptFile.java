@@ -1,5 +1,4 @@
-// Cryptology, cryptography and cryptanalysis - Course one
-
+// Cryptology, cryptography and cryptanalysis
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class EncryptDecryptFile {
 
@@ -114,7 +111,6 @@ class EncryptDecryptFile {
         Path path = Paths.get(pathToEncryptedFile);
         List<Character> alphabetList = Arrays.asList(alphabets);
         List<String> decodedText = new ArrayList<>();
-        Pattern p = Pattern.compile("[^a-z0-9\s+]", Pattern.CASE_INSENSITIVE);
         List<String> specialCharLines = new ArrayList<>();
 
         for (String line : Files.readAllLines(path)) {
@@ -138,8 +134,7 @@ class EncryptDecryptFile {
 
         for (String text : decodedText) {
             System.out.println("Decoded text: " + text);
-            Matcher m = p.matcher(text);
-            boolean found = m.find();
+            boolean found = hasSpecialCharacter(text);
             if (found) {
                 specialCharLines.add(text);
             }
@@ -148,8 +143,17 @@ class EncryptDecryptFile {
         if (specialCharLines.size() > 0) {
             decodeSpecialChars(specialCharLines); //decode special characters
         }
-        System.out.println("\nBrute force action complete.");
+        System.out.println("Brute force action complete.");
         System.out.println();
+    }
+
+    private static boolean hasSpecialCharacter(String str) {
+        for (char c : specialChars) {
+            if (str.indexOf(c) != -1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void decodeSpecialChars(List<String> decodeList) {
